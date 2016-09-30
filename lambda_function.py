@@ -92,7 +92,7 @@ def get_my_route_info(from_station, to_station):
     schedule = json.loads(response.text)
     if len(schedule) == 0:
         return None
-    else
+    else:
         return {
             "departure_time": schedule[0]['orig_departure_time'],
             "arrival_time": schedule[0]['orig_arrival_time'],
