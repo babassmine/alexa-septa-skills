@@ -111,8 +111,8 @@ def get_next_train_info(intent, session):
 
     if ('FromStation' in intent['slots']) and ('ToStation' in intent['slots']):
         # favorite_color = intent['slots']['Color']['value']
-        from_station = intent['slots']['FromStation']['value']
-        to_station = intent['slots']['ToStation']['value']
+        from_station = station_lookup(intent['slots']['FromStation']['value'])
+        to_station = station_lookup(intent['slots']['ToStation']['value'])
         route_info = get_my_route_info(from_station, to_station)
         speech_output = "The next train from " + \
                         from_station + \
