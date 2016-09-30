@@ -108,8 +108,8 @@ def get_next_train_info(intent, session):
     should_end_session = True
 
     if ('FromStation' in intent['slots']) and ('ToStation' in intent['slots']):
-        from_station = station_lookup(intent['slots']['FromStation']['value'])
-        to_station = station_lookup(intent['slots']['ToStation']['value'])
+        from_station = station_lookup(intent['slots']['FromStation']['value'].lower())
+        to_station = station_lookup(intent['slots']['ToStation']['value'].lower())
         print("septa from station = " + from_station)
         print("septa to station = " + to_station)
         route_info = get_my_route_info(from_station, to_station)
