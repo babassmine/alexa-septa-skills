@@ -9,6 +9,7 @@ http://amzn.to/1LGWsLG
 
 from __future__ import print_function
 import requests
+import csv
 import json
 # --------------- Stations -----------------------------------------------------
 def get_stations():
@@ -86,9 +87,6 @@ def handle_session_end_request():
 
 
 def get_my_route_info(from_station, to_station):
-    to_cap = lambda x: x.capitalize()
-    from_station = " ".join(map(to_cap, from_station.split(" ")))
-    to_station = " ".join(map(to_cap, to_station.split(" ")))
     print("septa endpoint = " + 'http://www3.septa.org/hackathon/NextToArrive/'+from_station+'/'+to_station)
     response = requests.get('http://www3.septa.org/hackathon/NextToArrive/'+from_station+'/'+to_station)
     schedule = json.loads(response.text)
@@ -110,9 +108,10 @@ def get_next_train_info(intent, session):
     should_end_session = True
 
     if ('FromStation' in intent['slots']) and ('ToStation' in intent['slots']):
-        # favorite_color = intent['slots']['Color']['value']
         from_station = station_lookup(intent['slots']['FromStation']['value'])
         to_station = station_lookup(intent['slots']['ToStation']['value'])
+        print("septa from station = " + from_station)
+        print("septa to station = " + to_station)
         route_info = get_my_route_info(from_station, to_station)
         speech_output = "The next train from " + \
                         from_station + \
@@ -199,9 +198,9 @@ def lambda_handler(event, context):
     prevent someone else from configuring a skill that sends requests to this
     function.
     """
-    if (event['session']['application']['applicationId'] !=
-            "amzn1.ask.skill.22754375-6d40-4dd2-9f0c-33651b755517"):
-        raise ValueError("Invalid Application ID")
+    # if (event['session']['application']['applicationId'] !=
+    #         "amzn1.ask.skill.22754375-6d40-4dd2-9f0c-33651b755517"):
+    #     raise ValueError("Invalid Application ID")
 
     if event['session']['new']:
         on_session_started({'requestId': event['request']['requestId']},
