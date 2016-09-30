@@ -90,12 +90,15 @@ def get_my_route_info(from_station, to_station):
     print("septa endpoint = " + 'http://www3.septa.org/hackathon/NextToArrive/'+from_station+'/'+to_station)
     response = requests.get('http://www3.septa.org/hackathon/NextToArrive/'+from_station+'/'+to_station)
     schedule = json.loads(response.text)
-    return {
-        "departure_time": schedule[0]['orig_departure_time'],
-        "arrival_time": schedule[0]['orig_arrival_time'],
-        "delay": schedule[0]['orig_delay'],
-        "line": schedule[0]['orig_line']
-        }
+    if len(schedule) == 0:
+        return None
+    else
+        return {
+            "departure_time": schedule[0]['orig_departure_time'],
+            "arrival_time": schedule[0]['orig_arrival_time'],
+            "delay": schedule[0]['orig_delay'],
+            "line": schedule[0]['orig_line']
+            }
 
 
 def get_next_train_info(intent, session):
@@ -113,16 +116,24 @@ def get_next_train_info(intent, session):
         print("septa from station = " + from_station)
         print("septa to station = " + to_station)
         route_info = get_my_route_info(from_station, to_station)
-        speech_output = "The next train from " + \
-                        from_station + \
-                        " to " +\
-                        to_station + \
-                        " is at " +\
-                        route_info["departure_time"] + \
-                        ". It will be arriving at " + \
-                        route_info["arrival_time"] + \
-                        ". The current delay is " + \
-                        route_info["delay"]
+        if route_info:
+            speech_output = "The next train from " + \
+                            from_station + \
+                            " to " +\
+                            to_station + \
+                            " is at " +\
+                            route_info["departure_time"] + \
+                            ". It will be arriving at " + \
+                            route_info["arrival_time"] + \
+                            ". The current delay is " + \
+                            route_info["delay"]
+        else:
+            speech_output = "No schedule is avialable trains from " + \
+                            from_station + \
+                            " to " +\
+                            to_station + \
+                            " at this time. "
+
         reprompt_text = None
     else:
         speech_output = "I am not sure what stations you want information about. " \
