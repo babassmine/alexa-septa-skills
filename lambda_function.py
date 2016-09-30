@@ -11,6 +11,17 @@ from __future__ import print_function
 import requests
 import json
 # --------------- Stations -----------------------------------------------------
+def get_stations():
+    stations_map = {}
+    with open('station_map.csv', 'rU') as csvfile:
+        stations = csv.reader(csvfile)
+        for station in stations:
+            stations_map[station[1].lower()] = station[0]
+    return stations_map
+
+def station_lookup(name):
+    stations = get_stations()
+    return stations.get(name)
 
 # --------------- Helpers that build all of the responses ----------------------
 
